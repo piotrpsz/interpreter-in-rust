@@ -1,3 +1,13 @@
+/***
+* Project: parser-in- rust
+* File   : token.rs
+* Autor  : Piotr Pszczółkowski (piotr@beesoft.pl)
+* Licence: MIT
+*/
+
+use std::collections::HashMap;
+use std::fmt;
+
 pub type TokenType = &'static str;
 
 pub const ILLEGAL: &'static str = "ILLEGAL";
@@ -28,6 +38,21 @@ pub const IF: &'static str = "IF";
 pub const ELSE: &'static str = "ELSE";
 pub const RETURN: &'static str = "RETURN";
 
+lazy_static! {
+    static ref KEYWORDS: HashMap<&'static str, &'static str> = {
+        let mut keys = HashMap::new();
+        keys.insert("fn", FUNCTION);
+        keys.insert("let", LET);
+        keys.insert("true", TRUE);
+        keys.insert("false", FALSE);
+        keys.insert("if", IF);
+        keys.insert("else", ELSE);
+        keys.insert("return", RETURN);
+        keys
+    };
+}
+
+#[derive(Debug, PartialEq)]
 pub struct Token {
     name: TokenType,
     literal: String,
@@ -36,5 +61,38 @@ pub struct Token {
 impl Token {
     pub fn new(name: TokenType, literal: String) -> Token {
         Token { name, literal }
+    }
+
+    #[inline]
+    pub fn name(&self) -> TokenType {
+        return self.name;
+    }
+
+    #[inline]
+    pub fn literal(&self) -> String {
+        return self.literal.clone();
+    }
+
+    #[inline]
+    pub fn is_eof(&self) -> bool {
+        self.name == EOF
+    }
+
+    #[inline]
+    pub fn is_illegal(&self) -> bool {
+        self.name == ILLEGAL
+    }
+}
+
+pub fn lookup(ident: &str) -> TokenType {
+    if let Some(token) = KEYWORDS.get(ident) {
+        return token;
+    }
+    IDENT
+}
+
+impl fmt::Display for Token {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "Token({} |{}|)", self.name, self.literal)
     }
 }

@@ -27,7 +27,22 @@ impl Lexer {
         lexer
     }
 
+    pub fn run(&mut self) -> Vec<Token> {
+        let mut tokens: Vec<Token> = Vec::new();
+        loop {
+            let t = self.next_token();
+            let stop = t.is_eof();
+            tokens.push(t);
+            if stop {
+                break;
+            }
+        }
+        tokens
+    }
+
     pub fn next_token(&mut self) -> Token {
+        self.skip_whitespaces();
+
         let token = match self.ch {
             '=' => {
                 if self.peek_char() == '=' {
@@ -55,12 +70,23 @@ impl Lexer {
             ',' => Token::new(token::COMMA, ','.to_string()),
             '{' => Token::new(token::LBRACE, '{'.to_string()),
             '}' => Token::new(token::RBRACE, '}'.to_string()),
-
+            '(' => Token::new(token::LPAREN, '('.to_string()),
+            ')' => Token::new(token::RPAREN, '('.to_string()),
+            ZERO_CHAR => Token::new(token::EOF, "".to_string()),
             _ => {
-                panic!("?")
+                if self.ch.is_alphabetic() {
+                    let literal = self.read_identifier();
+                    let name = token::lookup(&literal);
+                    Token::new(name, literal)
+                } else if self.ch.is_digit(10) {
+                    Token::new(token::INT, self.read_number())
+                } else {
+                    Token::new(token::ILLEGAL, self.ch.to_string())
+                }
             }
         };
 
+        self.read_char();
         token
     }
 
@@ -115,5 +141,70 @@ impl Lexer {
 
     fn new_token(&self, name: TokenType, vc: char) -> Token {
         Token::new(name, vc.to_string())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_next_token() {
+        let input = r"let five = 5;
+let ten = 10;
+let add = fn(x, y) {
+  x + y;
+};
+
+let result = add(five, ten);
+!-/*5;
+5 < 10 > 5;
+
+if (5 < 10) {
+	return true;
+} else {
+	return false;
+}
+
+10 == 10;
+10 != 9;
+";
+
+        #[derive(Debug)]
+        struct Result {
+            expected_name: TokenType,
+            expected_literal: &'static str,
+        }
+
+        let tests = [
+            Result {
+                expected_name: token::LET,
+                expected_literal: "let",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "five",
+            },
+            Result {
+                expected_name: token::ASSIGN,
+                expected_literal: "=",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "5",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+        ];
+
+        let mut lex = Lexer::new(input.chars().collect());
+        for t in &tests {
+            let retval = lex.next_token();
+            println!("{}, {:?}", retval, t);
+            assert_eq!(retval.name(), t.expected_name);
+            assert_eq!(retval.literal(), t.expected_literal);
+        }
     }
 }
