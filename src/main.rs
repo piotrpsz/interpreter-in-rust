@@ -1,3 +1,12 @@
+#![allow(dead_code)]
+
+mod lexer;
+mod shared;
+mod token;
+
 fn main() {
-    println!("Hello, world!");
+    let code = "let x = 5 + 5;".to_owned();
+
+    let characters: Vec<char> = code.chars().collect();
+    let lex = lexer::Lexer::new(characters);
 }
