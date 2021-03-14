@@ -77,9 +77,9 @@ impl Lexer {
                 if self.ch.is_alphabetic() {
                     let literal = self.read_identifier();
                     let name = token::lookup(&literal);
-                    Token::new(name, literal)
+                    return Token::new(name, literal);
                 } else if self.ch.is_digit(10) {
-                    Token::new(token::INT, self.read_number())
+                    return Token::new(token::INT, self.read_number());
                 } else {
                     Token::new(token::ILLEGAL, self.ch.to_string())
                 }
@@ -202,7 +202,7 @@ if (5 < 10) {
         let mut lex = Lexer::new(input.chars().collect());
         for t in &tests {
             let retval = lex.next_token();
-            println!("{}, {:?}", retval, t);
+            // println!("{}, {:?}", retval, t);
             assert_eq!(retval.name(), t.expected_name);
             assert_eq!(retval.literal(), t.expected_literal);
         }
