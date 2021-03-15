@@ -71,7 +71,7 @@ impl Lexer {
             '{' => Token::new(token::LBRACE, '{'.to_string()),
             '}' => Token::new(token::RBRACE, '}'.to_string()),
             '(' => Token::new(token::LPAREN, '('.to_string()),
-            ')' => Token::new(token::RPAREN, '('.to_string()),
+            ')' => Token::new(token::RPAREN, ')'.to_string()),
             ZERO_CHAR => Token::new(token::EOF, "".to_string()),
             _ => {
                 if self.ch.is_alphabetic() {
@@ -196,6 +196,282 @@ if (5 < 10) {
             Result {
                 expected_name: token::SEMICOLON,
                 expected_literal: ";",
+            },
+            Result {
+                expected_name: token::LET,
+                expected_literal: "let",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "ten",
+            },
+            Result {
+                expected_name: token::ASSIGN,
+                expected_literal: "=",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "10",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::LET,
+                expected_literal: "let",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "add",
+            },
+            Result {
+                expected_name: token::ASSIGN,
+                expected_literal: "=",
+            },
+            Result {
+                expected_name: token::FUNCTION,
+                expected_literal: "fn",
+            },
+            Result {
+                expected_name: token::LPAREN,
+                expected_literal: "(",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "x",
+            },
+            Result {
+                expected_name: token::COMMA,
+                expected_literal: ",",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "y",
+            },
+            Result {
+                expected_name: token::RPAREN,
+                expected_literal: ")",
+            },
+            Result {
+                expected_name: token::LBRACE,
+                expected_literal: "{",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "x",
+            },
+            Result {
+                expected_name: token::PLUS,
+                expected_literal: "+",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "y",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::RBRACE,
+                expected_literal: "}",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::LET,
+                expected_literal: "let",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "result",
+            },
+            Result {
+                expected_name: token::ASSIGN,
+                expected_literal: "=",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "add",
+            },
+            Result {
+                expected_name: token::LPAREN,
+                expected_literal: "(",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "five",
+            },
+            Result {
+                expected_name: token::COMMA,
+                expected_literal: ",",
+            },
+            Result {
+                expected_name: token::IDENT,
+                expected_literal: "ten",
+            },
+            Result {
+                expected_name: token::RPAREN,
+                expected_literal: ")",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::BANG,
+                expected_literal: "!",
+            },
+            Result {
+                expected_name: token::MINUS,
+                expected_literal: "-",
+            },
+            Result {
+                expected_name: token::SLASH,
+                expected_literal: "/",
+            },
+            Result {
+                expected_name: token::ASTRISK,
+                expected_literal: "*",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "5",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "5",
+            },
+            Result {
+                expected_name: token::LT,
+                expected_literal: "<",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "10",
+            },
+            Result {
+                expected_name: token::GT,
+                expected_literal: ">",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "5",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::IF,
+                expected_literal: "if",
+            },
+            Result {
+                expected_name: token::LPAREN,
+                expected_literal: "(",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "5",
+            },
+            Result {
+                expected_name: token::LT,
+                expected_literal: "<",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "10",
+            },
+            Result {
+                expected_name: token::RPAREN,
+                expected_literal: ")",
+            },
+            Result {
+                expected_name: token::LBRACE,
+                expected_literal: "{",
+            },
+            Result {
+                expected_name: token::RETURN,
+                expected_literal: "return",
+            },
+            Result {
+                expected_name: token::TRUE,
+                expected_literal: "true",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::RBRACE,
+                expected_literal: "}",
+            },
+            Result {
+                expected_name: token::ELSE,
+                expected_literal: "else",
+            },
+            Result {
+                expected_name: token::LBRACE,
+                expected_literal: "{",
+            },
+            Result {
+                expected_name: token::RETURN,
+                expected_literal: "return",
+            },
+            Result {
+                expected_name: token::FALSE,
+                expected_literal: "false",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::RBRACE,
+                expected_literal: "}",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "10",
+            },
+            Result {
+                expected_name: token::EQ,
+                expected_literal: "==",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "10",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "10",
+            },
+            Result {
+                expected_name: token::NOT_EQ,
+                expected_literal: "!=",
+            },
+            Result {
+                expected_name: token::INT,
+                expected_literal: "9",
+            },
+            Result {
+                expected_name: token::SEMICOLON,
+                expected_literal: ";",
+            },
+            Result {
+                expected_name: token::EOF,
+                expected_literal: "",
             },
         ];
 

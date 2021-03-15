@@ -93,6 +93,6 @@ pub fn lookup(ident: &str) -> TokenType {
 
 impl fmt::Display for Token {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Token({} |{}|)", self.name, self.literal)
+        write!(f, "Token<{} |{}|>", self.name, self.literal)
     }
 }
