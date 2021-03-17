@@ -74,11 +74,11 @@ impl Lexer {
             ')' => Token::new(token::RPAREN, ')'.to_string()),
             ZERO_CHAR => Token::new(token::EOF, "".to_string()),
             _ => {
-                if self.ch.is_alphabetic() {
+                if self.is_letter(self.ch) {
                     let literal = self.read_identifier();
                     let name = token::lookup(&literal);
                     return Token::new(name, literal);
-                } else if self.ch.is_digit(10) {
+                } else if self.is_digit(self.ch) {
                     return Token::new(token::INT, self.read_number());
                 } else {
                     Token::new(token::ILLEGAL, self.ch.to_string())
@@ -109,7 +109,7 @@ impl Lexer {
 
     fn read_identifier(&mut self) -> String {
         let pos = self.pos;
-        while self.ch.is_alphabetic() {
+        while self.is_letter(self.ch) {
             self.read_char();
         }
         let text: String = self.input[pos..self.pos].iter().collect();
@@ -118,29 +118,45 @@ impl Lexer {
 
     fn read_number(&mut self) -> String {
         let pos = self.pos;
-        while self.ch.is_digit(10) {
+        while self.is_digit(self.ch) {
             self.read_char();
         }
         let text: String = self.input[pos..self.pos].iter().collect();
         text
     }
 
+    fn read_string(&mut self) -> String {
+        let pos = self.pos + 1;
+        loop {
+            self.read_char();
+            if self.ch == '"' || self.ch == ZERO_CHAR {
+                break;
+            }
+        }
+        let text: String = self.input[pos..self.pos].iter().collect();
+        text
+    }
+
+    #[inline]
     fn skip_whitespaces(&mut self) {
-        while self.is_whitespace() {
+        while self.is_whitespace(self.ch) {
             self.read_char();
         }
     }
 
     #[inline]
-    fn is_whitespace(&self) -> bool {
-        match self.ch {
-            ' ' | '\t' | '\n' | '\r' => true,
-            _ => false,
-        }
+    fn is_digit(&self, c: char) -> bool {
+        c >= '0' && c <= '9'
     }
 
-    fn new_token(&self, name: TokenType, vc: char) -> Token {
-        Token::new(name, vc.to_string())
+    #[inline]
+    fn is_letter(&self, c: char) -> bool {
+        (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_'
+    }
+
+    #[inline]
+    fn is_whitespace(&self, c: char) -> bool {
+        c == ' ' || c == '\t' || c == '\n' || c == '\r'
     }
 }
 

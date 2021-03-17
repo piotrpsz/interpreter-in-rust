@@ -77,11 +77,6 @@ impl Token {
     pub fn is_eof(&self) -> bool {
         self.name == EOF
     }
-
-    #[inline]
-    pub fn is_illegal(&self) -> bool {
-        self.name == ILLEGAL
-    }
 }
 
 pub fn lookup(ident: &str) -> TokenType {
